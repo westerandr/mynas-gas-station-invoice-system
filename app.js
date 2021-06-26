@@ -5,17 +5,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-
-var db = require('./config/db');
-
-// setup db
-db.authenticate()
-  .then((result) => {
-    console.log('DB Connection Established');
-  })
-  .catch((error) => {
-    console.log("Unable to connect to db: ", error);
-  })
+require('./models');
 
 var app = express();
 
@@ -23,7 +13,9 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
+if(process.env.NODE_ENV === 'development')
+  app.use(logger('dev'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

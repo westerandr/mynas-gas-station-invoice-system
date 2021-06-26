@@ -1,0 +1,22 @@
+<%- include('../partials/header') %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1><%- title %></h1>
+    </div>
+    <div>
+        <a href='/client' class='btn btn-secondary btn-lg'>Back</a>
+    </div>
+</div>
+<form method="POST" action="/client">
+    <div class="mb-3">
+      <label for="name" class="form-label">Name</label>
+      <input type="text" class="form-control" id="name">
+    </div>
+    <div class="mb-3">
+        <label for="invoice" class="form-label">Billing Number Start</label>
+        <input type="number" class="form-control" id="invoice">
+        <div class="form-text">The next Billing Invoice Number for Client</div>
+      </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+  </form>
+<%- include('../partials/footer') %>
