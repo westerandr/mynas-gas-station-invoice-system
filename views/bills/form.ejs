@@ -1,0 +1,65 @@
+<%- include('../partials/header') %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1><%- title %></h1>
+    </div>
+    <div>
+        <a href='/bill' class='btn btn-secondary btn-lg'>Back</a>
+    </div>
+</div>
+<form 
+    method="POST" 
+    action="/bill"
+    >
+    <div class="alert alert-warning my-4" role="alert">
+        Please make sure all Invoices are created for Bill first!
+      </div>
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" class="form-control" id="date" name="date" required>
+    </div>
+
+
+    <div class="mb-3">
+        <label for="client" class="form-label">Client</label>
+        <select class="form-select" id="client" name="clientId" required>
+            <%
+          
+            var options = clients;
+            for ( var i = 0; i < options.length; i++ )
+            {
+               
+                %><option value="<%=options[ i ].id %>" ><%=options[i].name %></option><%
+            }
+
+            %>
+
+          </select>
+    </div>
+
+
+    <div class="mb-3">
+        <label for="month" class="form-label">Month</label>
+        <select class="form-select" id="month" name="month" required>
+            <%
+  
+            var options = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            for ( var i = 0; i < options.length; i++ )
+            {
+                %><option value="<%=options[ i ] %>" ><%=options[i] %></option><%
+            }
+
+            %>
+
+          </select>
+    </div>
+
+    <div class="mb-3">
+        <label for="year" class="form-label">Year</label>
+        <input type="number"  class="form-control" id="year" min="0" name="year" required>
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Create</button>
+  </form>
+<%- include('../partials/footer') %>

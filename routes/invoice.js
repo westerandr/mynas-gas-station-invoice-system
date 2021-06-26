@@ -84,7 +84,7 @@ router.get("/create", async function (req, res, next) {
     try {
         const { date, saleType, license, purchaseOrder, amount, clientId } = req.body;
         await Invoice.update( 
-            { date, saleType, license, purchaseOrder, amount, clientId  },
+            { date, saleType, license, purchaseOrder, amount, ClientId: clientId  },
             { where: { number: req.params.id } }
         );
     

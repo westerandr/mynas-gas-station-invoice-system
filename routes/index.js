@@ -3,6 +3,8 @@ const router = express.Router();
 const clientRoutes = require('./client');
 const invoiceRoutes = require('./invoice');
 const vehicleRoutes = require('./vehicle');
+const billRoutes = require('./bill');
+
 
 
 /* GET home page. */
@@ -13,6 +15,8 @@ router.get('/', function(req, res, next) {
 router.use('/client', clientRoutes);
 router.use('/invoice', invoiceRoutes);
 router.use('/vehicle', vehicleRoutes);
+router.use('/bill', billRoutes);
+
 
 
 

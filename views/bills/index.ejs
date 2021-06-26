@@ -1,0 +1,51 @@
+<%- include('../partials/header') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1><%- title %></h1>
+        </div>
+        <div>
+            <a href='/bill/create' class='btn btn-primary btn-lg'>New</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <section>
+                <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Client</th>
+                        <th scope="col">Bill #</th>
+                        <th scope="col">Month</th>
+                        <th scope="col">Year</th>                    
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <% if(bills.length > 0){ %>
+                                <% bills.forEach(bill => {%>
+                                    <tr>
+                                        <td><%- bill?.id %></td>
+                                        <td><%- bill?.Client?.name %></td>
+                                        <td><%- bill?.number %></td>
+                                        <td><%- bill?.month %></td>
+                                        <td><%- bill?.year %></td>
+
+                                        <td><a href="/bill/details/<%- bill?.id %>" class="btn btn-secondary">Details</a></td>
+                                    </tr>
+                                <% }) %>
+                            <%}else{%>
+                                <tr>
+                                    <td colspan="6"><p class="text-center py-2 h6">No Bills created yet...</p></td>
+                                </tr>
+                            <% } %>
+
+                    </tbody>
+                  </table>
+            </section>
+        </div>
+    </div>
+
+<%- include('../partials/footer') %>

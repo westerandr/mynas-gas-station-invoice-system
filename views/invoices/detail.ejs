@@ -10,7 +10,7 @@
 <section>
     <p><strong>Date:</strong> <%- invoice.date %></p>
     <p><strong>Invoice #:</strong> <%- invoice.number %></p>
-    <p><strong>Client:</strong> <%- invoice.Client.name %></p>
+    <p><strong>Client:</strong> <%- invoice?.Client?.name %></p>
     <p><strong>Sale Type:</strong> <%- invoice.saleType %></p>
     <p><strong>Amount:</strong> $<%- invoice.amount %></p>
     

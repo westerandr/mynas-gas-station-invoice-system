@@ -80,7 +80,7 @@ router.get("/create", async function (req, res, next) {
     try {
         const { license, type, clientId } = req.body;
         await Vehicle.update( 
-            {  license, type, clientId },
+            {  license, type, ClientId: clientId },
             { where: { id: req.params.id } }
         );
     

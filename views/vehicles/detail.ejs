@@ -10,7 +10,7 @@
 <section>
     <p><strong>License:</strong> <%- vehicle.license %></p>
     <p><strong>Type:</strong> <%- vehicle.type %></p>
-    <p><strong>Client:</strong> <%- vehicle.Client.name %></p>
+    <p><strong>Client:</strong> <%- vehicle?.Client?.name %></p>
 
 </section>
 
@@ -21,7 +21,7 @@
    
             <form action="/vehicle/delete/<%- vehicle.id %>" method="POST">
                 <input type="submit" value="Delete" class="btn btn-danger ms-2"
-                  onclick="return confirm(`Are you sure you want to delete <%- vehicle.Client.name %>'s Vehicle (License: <%- vehicle.license %>)?`)"
+                  onclick="return confirm(`Are you sure you want to delete <%- vehicle?.Client?.name %>'s Vehicle (License: <%- vehicle.license %>)?`)"
                 />
               </form>
         
