@@ -5,7 +5,7 @@ const Client = require('./client');
 const Vehicle = db.define('Vehicle', {
     license: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
     },
     type: {
         type: DataTypes.STRING

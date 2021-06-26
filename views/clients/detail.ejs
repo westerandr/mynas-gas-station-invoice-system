@@ -1,3 +1,61 @@
 <%- include('../partials/header') %>
-<h1><%- title %></h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1><%- title %></h1>
+    </div>
+    <div>
+        <a href='/client' class='btn btn-secondary btn-lg'>Back</a>
+    </div>
+</div>
+<section>
+    <p><strong>Name:</strong> <%- clientDetail.name %></p>
+    <p><strong>Next Billing Invoice Number:</strong> <%- clientDetail.billingCounter %></p>
+    <p><strong>Total Invoices:</strong> <%- numInvoices %></p>
+    <p><strong>Approved Vehicles:</strong> <%- vehicles?.length %></p>
+</section>
+<hr class="my-4">
+<h2 class="mb-3">Vehicles</h2>
+<section>
+    <% if(vehicles.length > 0){ %>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+           
+                <th scope="col">License</th>
+                <th scope="col">Type</th>
+        
+              </tr>
+            </thead>
+            <tbody>
+        <% vehicles.forEach((v) => { %>    
+            <tr>
+           
+                <td><%- v?.license %></td>
+                <td><%- v?.type %></td>
+              
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+    <% }else{%>
+        
+        <p class="text-form">No Vehicles added for <%- clientDetail.name %>...</p>
+        <p><a href='/vehicle/create'>Click here to create a Vehicle</a></p>
+    <% }%>
+</section>
+<hr class="my-4">
+<section>
+    <div class="d-flex justify-content-end align-items-center">
+        <a href='/client/edit/<%- clientDetail?.id %>' class='btn btn-warning ms-2'>Edit</a>
+   
+            <form action="/client/delete/<%- clientDetail.id %>" method="POST">
+                <input type="submit" value="Delete" class="btn btn-danger ms-2"
+                  onclick="return confirm('Are you sure you want to delete <%- clientDetail.name %>?')"
+                />
+              </form>
+        
+    </div>
+</section>
+
 <%- include('../partials/footer') %>
+

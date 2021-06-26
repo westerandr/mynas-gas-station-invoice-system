@@ -1,0 +1,46 @@
+<%- include('../partials/header') %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1><%- title %></h1>
+    </div>
+    <div>
+        <a href='/invoice' class='btn btn-secondary btn-lg'>Back</a>
+    </div>
+</div>
+<section>
+    <p><strong>Date:</strong> <%- invoice.date %></p>
+    <p><strong>Invoice #:</strong> <%- invoice.number %></p>
+    <p><strong>Client:</strong> <%- invoice.Client.name %></p>
+    <p><strong>Sale Type:</strong> <%- invoice.saleType %></p>
+    <p><strong>Amount:</strong> $<%- invoice.amount %></p>
+    
+    <% 
+        if(invoice?.license){
+            %><p><strong>License:</strong> <%= invoice.license %></p><%
+        }
+        
+        if(invoice?.purchaseOrder){
+            %><p><strong>Purchase Order:</strong> <%= invoice.purchaseOrder %></p><%
+        }
+    %>
+
+
+
+</section>
+
+<hr class="my-4">
+<section>
+    <div class="d-flex justify-content-end align-items-center">
+        <a href='/invoice/edit/<%- invoice?.number %>' class='btn btn-warning ms-2'>Edit</a>
+   
+            <form action="/invoice/delete/<%- invoice.number %>" method="POST">
+                <input type="submit" value="Delete" class="btn btn-danger ms-2"
+                  onclick="return confirm(`Are you sure you want to delete Invoice #<%- invoice?.number %> for <%- invoice?.Client?.name %>?`)"
+                />
+              </form>
+        
+    </div>
+</section>
+
+<%- include('../partials/footer') %>
+

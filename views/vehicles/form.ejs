@@ -1,0 +1,55 @@
+<%- include('../partials/header') %>
+<% const isEdit = mode == 'edit'; %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1><%- title %></h1>
+    </div>
+    <div>
+        <a href='<%- isEdit ? '/vehicle/details/'+vehicle.id : '/vehicle' %>' class='btn btn-secondary btn-lg'>Back</a>
+    </div>
+</div>
+<form 
+    method="POST" 
+    action="<%- isEdit ? '/vehicle/'+vehicle.id : '/vehicle' %>"
+    >
+    <div class="mb-3">
+      <label for="license" class="form-label">License</label>
+      <input type="text" class="form-control" id="license" name="license" value="<%-  isEdit ? vehicle.license : '' %>" required>
+    </div>
+    <div class="mb-3">
+        <label for="type" class="form-label">Type</label>
+        <select class="form-select" id="type" name="type">
+            <%
+            if(!isEdit){
+                %><option selected></option> <%
+            }
+            var options = [ "UNLEADED", "DIESEL" ];
+            for ( var i = 0; i < options.length; i++ )
+            {
+                var selected = ( isEdit && vehicle.type == options[i] ) ? "selected" : "";
+                %><option value="<%=options[ i ] %>" <%=selected %>><%=options[i] %></option><%
+            }
+            %>
+          </select>
+    </div>
+    <div class="mb-3">
+        <label for="client" class="form-label">Client</label>
+        <select class="form-select" id="client" name="clientId" required>
+            <%
+            if(!isEdit){
+                %><option selected></option> <%
+            }
+            var options = clients;
+            for ( var i = 0; i < options.length; i++ )
+            {
+                var selected = ( isEdit && vehicle.ClientId == options[i].id ) ? "selected" : "";
+                %><option value="<%=options[ i ].id %>" <%=selected %>><%=options[i].name %></option><%
+            }
+
+            %>
+
+          </select>
+    </div>
+    <button type="submit" class="btn btn-primary"><%- isEdit ? 'Update' : 'Create' %></button>
+  </form>
+<%- include('../partials/footer') %>

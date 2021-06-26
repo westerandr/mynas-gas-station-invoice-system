@@ -1,0 +1,80 @@
+<%- include('../partials/header') %>
+<% const isEdit = mode == 'edit'; %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1><%- title %></h1>
+    </div>
+    <div>
+        <a href='<%- isEdit ? '/invoice/details/'+invoice.id : '/invoice' %>' class='btn btn-secondary btn-lg'>Back</a>
+    </div>
+</div>
+<form 
+    method="POST" 
+    action="<%- isEdit ? '/invoice/'+invoice?.number : '/invoice' %>"
+    >
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" class="form-control" id="date" name="date" value="<%-  isEdit ? invoice.date : '' %>" required>
+    </div>
+    <div class="mb-3">
+        <label for="number" class="form-label">Invoice #</label>
+        <% 
+            if(isEdit){
+                %><input type="number" class="form-control" id="number" value="<%= invoice?.number %>" readonly><%
+            }else{
+                %><input type="number" class="form-control" id="number" min="0" name="number"  required><%
+            }
+        %> 
+    </div>
+
+    <div class="mb-3">
+        <label for="client" class="form-label">Client</label>
+        <select class="form-select" id="client" name="clientId" required>
+            <%
+            if(!isEdit){
+                %><option selected></option> <%
+            }
+            var options = clients;
+            for ( var i = 0; i < options.length; i++ )
+            {
+                var selected = ( isEdit && invoice.ClientId == options[i].id ) ? "selected" : "";
+                %><option value="<%=options[ i ].id %>" <%=selected %>><%=options[i].name %></option><%
+            }
+
+            %>
+
+          </select>
+    </div>
+
+
+    <div class="mb-3">
+        <label for="saleType" class="form-label">Sale Type</label>
+        <input type="text" class="form-control" id="saleType" name="saleType" list="sale-type-list" value="<%-  isEdit ? invoice.saleType : '' %>" required>
+        <datalist id="sale-type-list">
+            <option value="Petrol">
+            <option value="Diesel">
+            <option value="Kerosene">
+        </datalist>
+    </div>
+
+    <div class="mb-3">
+        <label for="amount" class="form-label">Amount</label>
+        <input type="number" step="any" class="form-control" id="amount" min="0.00" name="amount" value="<%-  isEdit ? invoice.amount : '' %>" required>
+    </div>
+
+
+    <div class="mb-3">
+        <label for="license" class="form-label">License</label>
+        <input type="text" class="form-control" id="license" name="license" value="<%-  isEdit ? invoice.license : '' %>">
+    </div>
+    
+    <div class="mb-3">
+        <label for="purchaseOrder" class="form-label">Purchase Order</label>
+        <input type="text" class="form-control" id="purchaseOrder" name="purchaseOrder" value="<%-  isEdit ? invoice.purchaseOrder : '' %>">
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary"><%- isEdit ? 'Update' : 'Create' %></button>
+  </form>
+<%- include('../partials/footer') %>

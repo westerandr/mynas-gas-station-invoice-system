@@ -1,0 +1,32 @@
+<%- include('../partials/header') %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1><%- title %></h1>
+    </div>
+    <div>
+        <a href='/vehicle' class='btn btn-secondary btn-lg'>Back</a>
+    </div>
+</div>
+<section>
+    <p><strong>License:</strong> <%- vehicle.license %></p>
+    <p><strong>Type:</strong> <%- vehicle.type %></p>
+    <p><strong>Client:</strong> <%- vehicle.Client.name %></p>
+
+</section>
+
+<hr class="my-4">
+<section>
+    <div class="d-flex justify-content-end align-items-center">
+        <a href='/vehicle/edit/<%- vehicle?.id %>' class='btn btn-warning ms-2'>Edit</a>
+   
+            <form action="/vehicle/delete/<%- vehicle.id %>" method="POST">
+                <input type="submit" value="Delete" class="btn btn-danger ms-2"
+                  onclick="return confirm(`Are you sure you want to delete <%- vehicle.Client.name %>'s Vehicle (License: <%- vehicle.license %>)?`)"
+                />
+              </form>
+        
+    </div>
+</section>
+
+<%- include('../partials/footer') %>
+

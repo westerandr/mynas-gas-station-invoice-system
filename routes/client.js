@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const Client = require("../models/client");
+const Vehicle = require("../models/vehicle");
+const Invoice = require('../models/invoice');
 
 router.get("/", async function (req, res, next) {
   try {
@@ -27,7 +29,7 @@ router.post("/", async function (req, res, next) {
       billingCounter: invoice,
     });
 
-    res.redirect("/client/" + client.id);
+    res.redirect("/client/details/" + client.id);
   } catch (error) {
     next(error);
   }
@@ -37,16 +39,43 @@ router.get("/details/:id", async function (req, res, next) {
   try {
     const client = await Client.findByPk(req.params.id);
     if (!client) throw new Error("Client not found");
+    const vehicles = await Vehicle.findAll({
+      where: {
+        ClientId: client?.id,
+      }
+    });
+    const numInvoices = await Invoice.count({
+      where: {
+        ClientId: client?.id
+      }
+    })
     res.render("clients/detail", {
-      title: "Client Details - " + client?.name,
-      clientDetail: JSON.stringify(client),
+      title: "Client Details",
+      clientDetail: client,
+      vehicles,
+      numInvoices
     });
   } catch (error) {
     next(error);
   }
 });
 
-router.put("/:id", async function (req, res, next) {
+router.get("/edit/:id", async function (req, res, next) {
+  try {
+    const client = await Client.findByPk(req.params.id);
+    if (!client) throw new Error("Client not found");
+    
+    res.render("clients/form", {
+      title: "Edit Client",
+      clientDetail: client,
+      mode: 'edit'
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/:id", async function (req, res, next) {
   try {
     const { name, invoice } = req.body;
     await Client.update(
@@ -59,7 +88,7 @@ router.put("/:id", async function (req, res, next) {
   }
 });
 
-router.delete("/:id", async function (req, res, next) {
+router.post("/delete/:id", async function (req, res, next) {
   try {
     await Client.destroy({
       where: {

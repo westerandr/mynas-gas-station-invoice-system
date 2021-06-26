@@ -1,3 +1,46 @@
 <%- include('../partials/header') %>
-<h1><%- title %></h1>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1><%- title %></h1>
+        </div>
+        <div>
+            <a href='/vehicle/create' class='btn btn-primary btn-lg'>New</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <section>
+                <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">License</th>
+                        <th scope="col">Type</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <% if(vehicles.length > 0){ %>
+                                <% vehicles.forEach(v => {%>
+                                    <tr>
+                                        <th scope="row"><%- v?.id %></th>
+                                        <td><%- v?.license %></td>
+                                        <td><%- v?.type %></td>
+                                        <td><a href="/vehicle/details/<%- v?.id %>" class="btn btn-secondary">Details</a></td>
+                                    </tr>
+                                <% }) %>
+                            <%}else{%>
+                                <tr>
+                                    <td colspan="4"><p class="text-center py-2 h6">No Vehicles created yet...</p></td>
+                                </tr>
+                            <% } %>
+
+                    </tbody>
+                  </table>
+            </section>
+        </div>
+    </div>
+
 <%- include('../partials/footer') %>
