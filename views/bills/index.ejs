@@ -8,6 +8,42 @@
             <a href='/bill/create' class='btn btn-primary btn-lg'>New</a>
         </div>
     </div>
+    <div class="my-3">
+        <form action="/bill/find" method="POST" class="form d-flex justify-content-end align-items-center">
+            <div class="ms-2 mb-3">
+                <label for="clientId" class="form-label">Client</label>
+                <select name="clientId" id="clientId" class="form-select" required>
+                    <% 
+                        clients.forEach((client) => {
+                            %><option value="<%= client?.id %>"><%= client?.name %></option><%
+                        });
+                    %>
+                </select>
+            </div>
+            <div class="ms-2 mb-3">
+                <label for="month" class="form-label">Month</label>
+                <select class="form-select" id="month" name="month" required>
+                    <%
+          
+                    var options = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                    for ( var i = 0; i < options.length; i++ )
+                    {
+                        %><option value="<%=options[ i ] %>" ><%=options[i] %></option><%
+                    }
+        
+                    %>
+        
+                  </select>
+            </div>
+            <div class="ms-2 mb-3">
+                <label for="year" class="form-label">Year</label>
+                <input type="number"  class="form-control" id="year" min="0" name="year" required>
+            </div>        
+            <div class="ms-2 mb-3 pt-3">
+                <button type="submit" class="btn btn-info text-light">Search Bill</button>
+            </div>
+        </form>
+    </div>
     <div class="row">
         <div class="col">
             <section>

@@ -6,6 +6,7 @@ const Vehicle = db.define('Vehicle', {
     license: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
     },
     type: {
         type: DataTypes.STRING

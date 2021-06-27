@@ -10,6 +10,20 @@
     </div>
     <div class="row">
         <div class="col">
+            <form id="searchForm" class="form" action="/invoice/details">
+                <div class="form-group my-2 d-flex justify-content-end" >
+                    <div class="ms-2" style="width:250px;">
+                        <input class="form-control" type="number" min="0" placeholder="Invoice #" id="invoiceToSearch" required>       
+                    </div>
+                    <div class="ms-2">
+                        <button type="submit" class="btn btn-info text-light ms-2">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             <section>
                 <table class="table table-bordered">
                     <thead>
@@ -50,5 +64,17 @@
             </section>
         </div>
     </div>
+
+    <script>
+        const searchForm = document.getElementById("searchForm");
+        const invoiceToSearch = document.getElementById("invoiceToSearch");
+        searchForm.addEventListener("submit", function(e){
+            const inv = invoiceToSearch.value;
+            const getSubmitLink = searchForm.getAttribute("action");
+            console.log(inv, getSubmitLink)
+            searchForm.setAttribute("action", `${getSubmitLink}/${inv}`);
+        
+        })
+    </script>
 
 <%- include('../partials/footer') %>

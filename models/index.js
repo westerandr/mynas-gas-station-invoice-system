@@ -15,4 +15,4 @@ db.sync().then(() => {
     console.log('DB Synched');   
 }).catch(err => console.log(err))
 
-module.exports = { Client, Vehicle, Invoice}
+module.exports = { Client, Vehicle, Invoice, Bill}

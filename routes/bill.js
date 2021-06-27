@@ -12,7 +12,8 @@ router.get('/', async function(req, res, next){
         const bills = await Bill.findAll({
             include: Client
         });
-        res.render("bills", { title: "Billing", bills });
+        const clients = await Client.findAll();
+        res.render("bills", { title: "Billing", bills, clients });
       } catch (error) {
         next(error);
       }
@@ -66,6 +67,23 @@ router.get("/create", async function (req, res, next) {
       next(error);
     }
   });
+
+  router.post('/find', async function(req, res, next){
+    try {
+      const { clientId, month, year } = req.body;
+      const foundBill = await Bill.findOne({
+        where: {
+          ClientId: clientId,
+          month,
+          year
+        }
+      });
+      if(!foundBill) throw new Error('Bill not found for the requested parameters');
+      res.redirect('/bill/details/'+foundBill?.id);
+    } catch (error) {
+      next(error);
+    }
+  })
   
   router.get("/details/:id", async function (req, res, next) {
     try {

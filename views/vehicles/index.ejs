@@ -17,6 +17,8 @@
                         <th scope="col">Id</th>
                         <th scope="col">License</th>
                         <th scope="col">Type</th>
+                        <th scope="col">Client</th>
+
                         <th scope="col"></th>
                       </tr>
                     </thead>
@@ -28,6 +30,8 @@
                                         <th scope="row"><%- v?.id %></th>
                                         <td><%- v?.license %></td>
                                         <td><%- v?.type %></td>
+                                        <td><%- v?.Client?.name %></td>
+
                                         <td><a href="/vehicle/details/<%- v?.id %>" class="btn btn-secondary">Details</a></td>
                                     </tr>
                                 <% }) %>
