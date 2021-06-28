@@ -3,6 +3,7 @@ const router = express.Router();
 const moment = require('moment');
 const Op = require('sequelize').Op;
 const { Invoice } = require("../models");
+const { exportBill } = require('../utils/export-excel');
 const Bill = require('../models/bill');
 const Client = require('../models/client');
 const Vehicle = require('../models/vehicle');
@@ -137,6 +138,52 @@ router.get("/create", async function (req, res, next) {
         },
       });
       res.redirect("/bill");
+    } catch (error) {
+      next(error);
+    }
+  });
+
+
+  router.post("/export/:id", async function(req, res, next){
+    try {
+      const bill = await Bill.findOne({
+        where: {
+            id: req.params.id
+        },
+        include: Client
+      });
+      if (!bill) throw new Error("Bill not found");
+
+      let startDate = moment(new Date(`01 ${bill.month} ${bill.year}`))
+      let endDate = moment(startDate).endOf('month');
+
+      let sd = startDate.format('YYYY-MM-DD');
+      let ed = endDate.format('YYYY-MM-DD');
+
+      let dueDate = moment(startDate).add(1, 'M')
+      let dueMonth = dueDate.format("MMMM");
+      let dueYear = dueDate.format("YYYY");
+
+      const invoices = await Invoice.findAll({
+          where: {
+              ClientId: bill?.ClientId,
+              date: {
+                  [Op.between]: [sd, ed]
+              }
+          }
+      });
+
+      const dateIssued = moment(bill.date).format('Do MMMM YYYY');
+      const vehicles = await Vehicle.findAll({
+        where: {
+          ClientId: bill?.ClientId,
+        }
+      });
+
+      let filename = `${bill?.Client?.name} ${bill.month} ${bill.year}`.toUpperCase();
+      filename += ".xlsx"
+      await exportBill(res, filename, bill, { dueMonth, dueYear}, dateIssued, vehicles, invoices );
+
     } catch (error) {
       next(error);
     }

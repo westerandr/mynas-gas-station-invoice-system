@@ -87,8 +87,10 @@
 <hr class="my-4">
 <section>
     <div class="d-flex justify-content-end align-items-center">
-       
-            <form action="/bill/delete/<%- bill.id %>" method="POST">
+        <form class="ms-2" action="/bill/export/<%- bill.id %>" method="POST">
+            <input type="submit" value="Export" class="btn btn-success ms-2"/>
+          </form>
+            <form class="ms-2" action="/bill/delete/<%- bill.id %>" method="POST">
                 <input type="submit" value="Delete" class="btn btn-danger ms-2"
                   onclick="return confirm(`Are you sure you want to delete Bill #<%- bill?.number %> for <%- bill?.Client?.name %>?`)"
                 />
