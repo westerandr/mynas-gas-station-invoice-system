@@ -2,9 +2,11 @@
 <html>
   <head>
     <title><%= title %></title>
+    <meta name="google" content="notranslate">
     <link rel="stylesheet" href="/css/bootstrap.css">
     <link rel='stylesheet' href='/css/style.css' />
     <script defer src="/js/bootstrap.js"></script>
+    <script src="https://kit.fontawesome.com/4dcd30869e.js" crossorigin="anonymous"></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -16,19 +18,19 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link  <%- title == 'Invoice System' ? 'active' : '' %>" aria-current="page" href="/">Home</a>
+                <a class="nav-link  <%- title == 'Invoice System' ? 'active' : '' %>" aria-current="page" href="/"><i class="fas fa-home"></i> Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <%- title == 'Invoices' ? 'active' : '' %>" href="/invoice">Invoices</a>
+                <a class="nav-link <%- title == 'Invoices' ? 'active' : '' %>" href="/invoice"><i class="fas fa-receipt"></i> Invoices</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <%- title == 'Billing' ? 'active' : '' %>" href="/bill">Billing</a>
+                <a class="nav-link <%- title == 'Billing' ? 'active' : '' %>" href="/bill"><i class="fas fa-file-invoice-dollar"></i> Billing</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <%- title == 'Clients' ? 'active' : '' %>" href="/client">Clients</a>
+                <a class="nav-link <%- title == 'Clients' ? 'active' : '' %>" href="/client"><i class="fas fa-user-friends"></i> Clients</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link <%- title == 'Vehicles' ? 'active' : '' %>" href="/vehicle">Vehicles</a>
+                <a class="nav-link <%- title == 'Vehicles' ? 'active' : '' %>" href="/vehicle"><i class="fas fa-car"></i> Vehicles</a>
               </li>
 
         

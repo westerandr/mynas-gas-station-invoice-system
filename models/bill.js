@@ -20,6 +20,11 @@ const Bill = db.define('Bill', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
+
+    isPaid: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    }
 },
 {
     indexes: [{ unique: true, fields: ['month', 'year', 'ClientId'] }]

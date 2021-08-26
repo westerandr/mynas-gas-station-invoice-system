@@ -54,7 +54,9 @@
                         <th scope="col">Client</th>
                         <th scope="col">Bill #</th>
                         <th scope="col">Month</th>
-                        <th scope="col">Year</th>                    
+                        <th scope="col">Year</th>     
+                        <th scope="col">Paid</th>                    
+
                         <th scope="col"></th>
                       </tr>
                     </thead>
@@ -68,6 +70,7 @@
                                         <td><%- bill?.number %></td>
                                         <td><%- bill?.month %></td>
                                         <td><%- bill?.year %></td>
+                                        <td class="<%- bill?.isPaid ? 'text-success' : 'text-warning' %>"><%- bill?.isPaid ? 'YES' : 'NO' %></td>
 
                                         <td><a href="/bill/details/<%- bill?.id %>" class="btn btn-secondary">Details</a></td>
                                     </tr>
@@ -79,9 +82,60 @@
                             <% } %>
 
                     </tbody>
+                    <tfoot>
+                        <% if (pages > 0) { %>
+                            <tr>
+                            <td colspan="7">  
+                                <ul class="pagination text-center">
+                              <% if (current == 1) { %>
+                                  <li class="disabled"><a>First</a></li>
+                              <% } else { %>
+                                  <li><a href="/bill?page=1&perPage=<%- curPerPage %>">First</a></li>
+                              <% } %>
+                              <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                              <% if (i !== 1) { %>
+                                  <li class="disabled"><a>...</a></li>
+                              <% } %>
+                              <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                                  <% if (i == current) { %>
+                                      <li class="active"><a><%= i %></a></li>
+                                  <% } else { %>
+                                      <li><a href="/bill?page=<%= i %>&perPage=<%- curPerPage %>"><%= i %></a></li>
+                                  <% } %>
+                                  <% if (i == Number(current) + 4 && i < pages) { %>
+                                      <li class="disabled"><a>...</a></li>
+                                  <% } %>
+                              <% } %>
+                              <% if (current == pages) { %>
+                                  <li class="disabled"><a>Last</a></li>
+                              <% } else { %>
+                                  <li><a href="/bill?page=<%= pages %>&perPage=<%- curPerPage %>">Last</a></li>
+                              <% } %>
+                              <label id="perPageLabel" for="perPage">Items Per Page</label>
+                              <select class="ms-1" id="perPage">
+                                  <option value="10" <%- curPerPage == 10 ? 'selected' : '' %>>10</option>
+                                  <option value="20" <%- curPerPage == 20 ? 'selected' : '' %>>20</option>
+                                  <option value="50" <%- curPerPage == 50 ? 'selected' : '' %>>50</option>
+                                  <option value="100" <%- curPerPage == 100 ? 'selected' : '' %>>100</option>
+                              </select>
+                          </ul>
+                       
+                          </td>
+                            </tr>
+                          <% } %>
+                    </tfoot>
                   </table>
             </section>
         </div>
     </div>
+
+    <script>
+        const perPage = document.getElementById("perPage");
+        perPage.onchange = () => {
+            const itemsPerPage = perPage.value;
+            if(itemsPerPage == null || itemsPerPage == "") return;
+            window.location.href = "/bill?page=1&perPage="+itemsPerPage;
+        }
+    </script>
 
 <%- include('../partials/footer') %>

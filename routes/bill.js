@@ -10,11 +10,17 @@ const Vehicle = require('../models/vehicle');
 
 router.get('/', async function(req, res, next){
     try {
-        const bills = await Bill.findAll({
-            include: Client
-        });
+
+      var perPage = req.query.perPage || 20;
+      var page = req.query.page || 1;
+      const bills = await Bill.findAll({
+          offset: ((perPage * page) - perPage),
+          limit: perPage,
+          include: Client
+      });
+      const count = await Bill.count();
         const clients = await Client.findAll();
-        res.render("bills", { title: "Billing", bills, clients });
+        res.render("bills", { title: "Billing", bills, clients, current: page, pages: Math.ceil(count / perPage), curPerPage: perPage });
       } catch (error) {
         next(error);
       }
@@ -143,6 +149,18 @@ router.get("/create", async function (req, res, next) {
     }
   });
 
+  router.post("/pay/:id", async function (req, res, next) {
+    try {
+      await Bill.update(
+        { isPaid: true },
+        { where: { id: req.params.id } }
+      );
+      res.redirect("/bill/details/"+req.params.id);
+    } catch (error) {
+      next(error);
+    }
+  });
+
 
   router.post("/export/:id", async function(req, res, next){
     try {
@@ -185,6 +203,7 @@ router.get("/create", async function (req, res, next) {
       await exportBill(res, filename, bill, { dueMonth, dueYear}, dateIssued, vehicles, invoices );
 
     } catch (error) {
+      
       next(error);
     }
   });

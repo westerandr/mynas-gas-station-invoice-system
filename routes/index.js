@@ -4,12 +4,21 @@ const clientRoutes = require('./client');
 const invoiceRoutes = require('./invoice');
 const vehicleRoutes = require('./vehicle');
 const billRoutes = require('./bill');
-
+const { Invoice, Client, Bill, Vehicle } = require("../models");
 
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Invoice System' });
+router.get('/', async function(req, res, next) {
+  try {
+    const invoices = await Invoice.count();
+    const bills = await Bill.count();
+    const clients = await Client.count();
+    const vehicles = await Vehicle.count();
+    
+    res.render('index', { title: 'Invoice System', invoices, bills, clients, vehicles });
+  } catch (error) {
+    next(error);
+  }
 });
 
 router.use('/client', clientRoutes);

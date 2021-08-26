@@ -81,6 +81,13 @@
             }, 0)
         %>
             <h3>Total: $<%- total.toFixed(2); %></h3>
+            <% if(!bill?.isPaid){ %>
+                <form method="POST" action="/bill/pay/<%- bill?.id %>" class="ms-3">
+                    <input type="submit" value="$ Pay Bill" class="btn btn-success">
+                </form>
+            <% }else{ %>
+                <h3 class="text-success text-uppercase ms-4">Bill Paid</h3>
+            <% } %>
         
     </div>
 </section>

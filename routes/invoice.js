@@ -6,10 +6,17 @@ const Client = require('../models/client');
 
 router.get('/', async function(req, res, next){
     try {
+      var perPage = req.query.perPage || 20;
+      var page = req.query.page || 1;
+
         const invoices = await Invoice.findAll({
-            include: Client
+            order: [['date', 'DESC']],
+            offset: ((perPage * page) - perPage),
+            limit: perPage,
+            include: Client,
         });
-        res.render("invoices", { title: "Invoices", invoices });
+        const count = await Invoice.count();
+        res.render("invoices", { title: "Invoices", invoices, current: page, pages: Math.ceil(count / perPage), curPerPage: perPage });
       } catch (error) {
         next(error);
       }

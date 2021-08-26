@@ -6,10 +6,15 @@ const Client = require('../models/client');
 
 router.get('/', async function(req, res){
     try {
+      var perPage = req.query.perPage || 20;
+      var page = req.query.page || 1;
         const vehicles = await Vehicle.findAll({
+            limit: perPage,
+            offset: (perPage * page) - perPage,
             include: Client
         });
-        res.render("vehicles", { title: "Vehicles", vehicles });
+        const count = await Vehicle.count();
+        res.render("vehicles", { title: "Vehicles", vehicles, current: page, pages: Math.ceil(count / perPage), curPerPage: perPage });
       } catch (error) {
         next(error);
       }

@@ -19,6 +19,7 @@ module.exports = {
                 workSheet.getCell('G10').value = `${bill?.number}`
 
                 const writeIndex = writeApprovedVehicles(workSheet, vehicles);
+                
                 const writeRow = workSheet.getRow(writeIndex);
 
                 writeRow.getCell(1).value = `${bill?.month} ${bill?.year} ACCOUNT`.toUpperCase();
@@ -34,7 +35,7 @@ module.exports = {
                 let startInvoiceIndex = writeIndex + 3;
 
                 const lastInvvoiceIndex = writeInvoices(workSheet, startInvoiceIndex, invoices);
-                
+      
                 let totalCell = workSheet.getCell(`G${lastInvvoiceIndex}`);
                 let totalAmount = invoices.reduce((sum, invoice) => {
                     return sum + invoice.amount;
@@ -55,7 +56,7 @@ module.exports = {
 }
 
 function writeApprovedVehicles(workSheet, vehicles){
-    if(vehicles.length < 1) return;
+   
     let startIndexRow = 13;
     let currentRow = workSheet.getRow(startIndexRow);
     let currentCell = 1;
@@ -84,7 +85,9 @@ function writeApprovedVehicles(workSheet, vehicles){
 }
 
 function writeInvoices(workSheet, startInvoiceIndex, invoices){
+   
     if(invoices.length < 1) return;
+    
     if(invoices.length > 3){
         workSheet.duplicateRow(startInvoiceIndex, invoices.length - 3, true);
     }
@@ -99,5 +102,6 @@ function writeInvoices(workSheet, startInvoiceIndex, invoices){
         currentRow.getCell(7).value = i?.amount;
         counter+=1;
     });
+    if(counter < 22) return 22;
     return counter;
 }
