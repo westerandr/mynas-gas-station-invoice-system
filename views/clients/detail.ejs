@@ -44,6 +44,41 @@
     <% }%>
 </section>
 <hr class="my-4">
+<h2 class="mb-3">Bills</h2>
+<section>
+    <% if(clientBills.length > 0){ %>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Month</th>
+                <th scope="col">Year</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Paid?</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+        <% clientBills.forEach((b) => { %>    
+            <tr>
+           
+                <td><%- b?.number %></td>
+                <td><%- b?.month %></td>
+                <td><%- b?.year %></td>
+                <td><%- b?.amount %></td>
+                <td><%- b?.isPaid ? 'Yes' : 'No' %></td>
+                <td><a href="<%- `/bill/details/${b?.id}` %>">View</a></td>
+
+              
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+    <% }%>
+ 
+</section>
+<hr class="my-4">
+
 <section>
     <div class="d-flex justify-content-end align-items-center">
         <a href='/client/edit/<%- clientDetail?.id %>' class='btn btn-warning ms-2'>Edit</a>

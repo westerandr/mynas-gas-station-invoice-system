@@ -3,6 +3,7 @@ const router = express.Router();
 const Client = require("../models/client");
 const Vehicle = require("../models/vehicle");
 const Invoice = require('../models/invoice');
+const Bill = require('../models/bill');
 
 router.get("/", async function (req, res, next) {
   try {
@@ -50,6 +51,11 @@ router.get("/details/:id", async function (req, res, next) {
         ClientId: client?.id,
       }
     });
+    const clientBills = await Bill.findAll({
+      where: {
+        ClientId: client?.id
+      }
+    });
     const numInvoices = await Invoice.count({
       where: {
         ClientId: client?.id
@@ -59,7 +65,8 @@ router.get("/details/:id", async function (req, res, next) {
       title: "Client Details",
       clientDetail: client,
       vehicles,
-      numInvoices
+      numInvoices,
+      clientBills
     });
   } catch (error) {
     next(error);

@@ -71,3 +71,34 @@ i{
 #perPage:focus {
   outline: auto;
 }
+
+.entity-count {
+  width: 200px;
+  height: auto;
+  border: 1px black solid;
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 10px;
+}
+
+.entity-count:hover {
+  cursor: pointer;
+}
+
+.entity-count > h4 {
+  font-size: 2.25rem;
+}
+
+.entity-count > div > i {
+  color: black;
+  font-size: 2rem;
+}
+
+.entity-number {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+
+
+

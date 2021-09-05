@@ -21,6 +21,11 @@ const Bill = db.define('Bill', {
         allowNull: false,
     },
 
+    amount: {
+        type: DataTypes.DECIMAL,
+        defaultValue: 0
+    },
+
     isPaid: {
         type: DataTypes.BOOLEAN,
         defaultValue: false

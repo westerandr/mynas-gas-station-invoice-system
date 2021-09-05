@@ -4,7 +4,7 @@
         <h1><%- title %></h1>
     </div>
     <div>
-        <a href='/bill' class='btn btn-secondary btn-lg'>Back</a>
+        <input type="button" class='btn btn-secondary btn-lg' value="Back" onclick="window.history.back()" /> 
     </div>
 </div>
 <section>
@@ -73,6 +73,39 @@
     </table>
 
 </section>
+<% if(billsNotPaid?.length > 0){ %>
+    <hr class="my-4">
+<h2 class="mb-3">Previous Unpaid Bills</h2>
+<section>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Month</th>
+                <th scope="col">Year</th>
+                <th scope="col">Bill #</th>
+                <th scope="col">Amount</th>
+                <th scope="col"></th>
+
+              </tr>
+            </thead>
+            <tbody>
+                <% billsNotPaid.forEach(bill => {%>
+                    <tr>
+                        <td><%- bill?.month %></td>
+                        <td><%- bill?.year %></td>
+                        <td><%- bill?.number %></td>
+                        <td><%- bill?.amount %></td>
+                        <td><a href="<%- `/bill/details/${bill?.id}` %>">View</a></td>
+
+                    </tr>
+                <% }) %>
+            </tbody>
+          </table>
+    </table>
+
+</section>
+<% } %>
+<hr class="my-4">
 <section>
     <div class="d-flex justify-content-end align-items-center">
         <%

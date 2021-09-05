@@ -1,5 +1,60 @@
 <%- include('./partials/header') %>
     <h1><%= title %></h1>
-    <p>Welcome to Myna's Gas Station <%= title %></p>
-<%- include('./partials/footer') %>
+    <p class="mt-3">Welcome to Myna's Gas Station <%= title %></p>
+    
+    <section class="container mt-5">
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-3 entity-count">
+                <h4 class="entity-title">
+                    Invoices
+                </h4>
+                <div class="d-flex justify-content-between p-2">
+                <i class="fas fa-receipt"></i>
+                <h6 class="entity-number"><%= invoices %></h6>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3 entity-count">
+                <h4 class="entity-title">
+                    Bills
+                </h4>
+                <div class="d-flex justify-content-between p-2">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <h6 class="entity-number"><%= bills %></h6>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3 entity-count">
+                <h4 class="entity-title">
+                    Clients
+                </h4>
+                <div class="d-flex justify-content-between p-2">
+                <i class="fas fa-user-friends"></i>
+                <h6 class="entity-number"><%= clients %></h6>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-3 entity-count">
+                <h4 class="entity-title">
+                    Vehicles
+                </h4>
+                <div class="d-flex justify-content-between p-2">
+                <i class="fas fa-car"></i>
+                <h6 class="entity-number"><%= vehicles %></h6>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- <hr class="m-4 w-75"> -->
+    <script>
+        const entites = document.getElementsByClassName('entity-count');
+        for(let i = 0; i < entites.length; i++){
+            let e = entites[i];
+            let text = e.getElementsByTagName('h4')[0].innerText;
+            let url = text.toLowerCase().slice(0,text.length - 1);
+            e.addEventListener('click', () => goToEntity(url))
+        }
 
+        const goToEntity = (text) => {
+            window.location.href = `/${text}`;
+        }
+    </script>
+    
+<%- include('./partials/footer') %>

@@ -4,7 +4,7 @@ const moment = require('moment');
 
 module.exports = {
 
-    exportBill: async function (response, filename, bill, {dueMonth, dueYear }, dateIssued, vehicles, invoices){
+    exportBill: async function (response, filename, bill, {dueMonth, dueYear }, dateIssued, vehicles, invoices, billsNotPaid){
         let template = path.join(process.cwd(), 'config', 'Template.xlsx');
         let outputFile = filename;
         let workbook = new Excel.Workbook();
@@ -41,6 +41,12 @@ module.exports = {
                     return sum + invoice.amount;
                 }, 0);
                 totalCell.value = totalAmount;
+
+                if(billsNotPaid?.length > 0){
+                    let unpaidBillsIndex = lastInvvoiceIndex + 2;
+                    writeUnpaidBills(workSheet, unpaidBillsIndex, billsNotPaid);
+                }
+
                 
                 response.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
                 response.setHeader("Content-Disposition", "attachment; filename=" + outputFile);
@@ -53,6 +59,18 @@ module.exports = {
     }
 
 
+}
+
+function writeUnpaidBills(workSheet, startIndex, unpaidBills){
+    let numOfBillsNotPaid = unpaidBills?.length;
+    let count = 0;
+    for(var i = startIndex; i < startIndex + numOfBillsNotPaid; i++){
+        let monthYearCell = workSheet.getCell(`B${i}`);
+        monthYearCell.value = `${unpaidBills[count]?.month.slice(0,3)}-${unpaidBills[count]?.year}` 
+        let amountCell = workSheet.getCell(`C${i}`);
+        amountCell.value = `$ ${unpaidBills[count]?.amount}`;
+        count++;
+    }
 }
 
 function writeApprovedVehicles(workSheet, vehicles){

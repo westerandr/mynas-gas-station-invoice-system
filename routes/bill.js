@@ -102,11 +102,34 @@ router.get("/create", async function (req, res, next) {
       });
       if (!bill) throw new Error("Bill not found");
 
+      let billsNotPaid = await Bill.findAll({
+        where: {
+          id: {
+            [Op.not] : bill?.id,
+          },
+          ClientId: bill?.ClientId,
+          isPaid: false,
+          year: {
+            [Op.lte]: bill?.year, 
+          },
+        }
+      });
+
       let startDate = moment(new Date(`01 ${bill.month} ${bill.year}`))
       let endDate = moment(startDate).endOf('month');
 
       let sd = startDate.format('YYYY-MM-DD');
       let ed = endDate.format('YYYY-MM-DD');
+   
+
+      if(billsNotPaid?.length > 0){
+        billsNotPaid = billsNotPaid.filter(b => {
+          let thisBillMonthYear = moment(new Date(`01 ${b?.month} ${b?.year}`));
+          return thisBillMonthYear.isBefore(startDate);
+        });
+      }
+
+   
 
       const invoices = await Invoice.findAll({
           where: {
@@ -116,6 +139,12 @@ router.get("/create", async function (req, res, next) {
               }
           }
       });
+
+      const amount = invoices.reduce((total, invoice) => total + invoice?.amount, 0);
+      if(bill.amount !== amount){
+        bill.amount = amount;
+        await bill.save();
+      }
 
       const dateIssued = moment(bill.date).format('Do MMMM YYYY');
       const vehicles = await Vehicle.findAll({
@@ -128,7 +157,8 @@ router.get("/create", async function (req, res, next) {
         bill,
         dateIssued,
         invoices,
-        vehicles
+        vehicles,
+        billsNotPaid
       });
     } catch (error) {
       next(error);
@@ -172,6 +202,20 @@ router.get("/create", async function (req, res, next) {
       });
       if (!bill) throw new Error("Bill not found");
 
+      let billsNotPaid = await Bill.findAll({
+        where: {
+          id: {
+            [Op.not] : bill?.id,
+          },
+          ClientId: bill?.ClientId,
+          isPaid: false,
+          year: {
+            [Op.lte]: bill?.year, 
+          },
+        }
+      });
+
+
       let startDate = moment(new Date(`01 ${bill.month} ${bill.year}`))
       let endDate = moment(startDate).endOf('month');
 
@@ -181,6 +225,13 @@ router.get("/create", async function (req, res, next) {
       let dueDate = moment(startDate).add(1, 'M')
       let dueMonth = dueDate.format("MMMM");
       let dueYear = dueDate.format("YYYY");
+
+      if(billsNotPaid?.length > 0){
+        billsNotPaid = billsNotPaid.filter(b => {
+          let thisBillMonthYear = moment(new Date(`01 ${b?.month} ${b?.year}`));
+          return thisBillMonthYear.isBefore(startDate);
+        });
+      }
 
       const invoices = await Invoice.findAll({
           where: {
@@ -200,7 +251,7 @@ router.get("/create", async function (req, res, next) {
 
       let filename = `${bill?.Client?.name} ${bill.month} ${bill.year}`.toUpperCase();
       filename += ".xlsx"
-      await exportBill(res, filename, bill, { dueMonth, dueYear}, dateIssued, vehicles, invoices );
+      await exportBill(res, filename, bill, { dueMonth, dueYear}, dateIssued, vehicles, invoices, billsNotPaid );
 
     } catch (error) {
       
