@@ -26,6 +26,12 @@ router.get('/', async function(req, res, next){
 router.get("/create", async function (req, res, next) {
     try {
       const clients = await Client.findAll();
+      // sort clients by name
+      clients.sort((a, b) => {
+        if (a.name < b.name) return -1;
+        if (a.name > b.name) return 1;
+        return 0;
+      });
       res.render("invoices/form", { title: "New Invoice", mode: "create", clients });
     } catch (error) {
       next(error);
