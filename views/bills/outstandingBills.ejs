@@ -1,0 +1,40 @@
+<%- include('../partials/header') %>
+
+    <div class="w-100">
+      <section>
+        <% if(bills.length > 0){ %>
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Client</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Month</th>
+                    <th scope="col">Year</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Paid?</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+            <% bills.forEach((b) => { %>    
+                <tr>
+                    <td><%- b?.Client?.name %></td>
+                    <td><%- b?.number %></td>
+                    <td><%- b?.month %></td>
+                    <td><%- b?.year %></td>
+                    <td><%- b?.amount %></td>
+                    <td><%- b?.isPaid ? 'Yes' : 'No' %></td>
+                    <td><a href="<%- `/bill/details/${b?.id}` %>">View</a></td>
+    
+                  
+                </tr>
+            <% }); %>
+            </tbody>
+        </table>
+        <% }%>
+     
+    </section>
+    </div>
+
+
+<%- include('../partials/footer') %>

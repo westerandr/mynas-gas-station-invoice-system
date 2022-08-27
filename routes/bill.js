@@ -3,10 +3,11 @@ const router = express.Router();
 const moment = require("moment");
 const Op = require("sequelize").Op;
 const { Invoice } = require("../models");
-const { exportBill } = require("../utils/export-excel");
+const { exportBill } = require("../utils/exportExcel");
 const Bill = require("../models/bill");
 const Client = require("../models/client");
 const Vehicle = require("../models/vehicle");
+const { getOutstandingBills } = require("../utils/getOutstandingBills");
 
 router.get("/", async function (req, res, next) {
   try {
@@ -324,6 +325,11 @@ router.post("/export/:id", async function (req, res, next) {
   } catch (error) {
     next(error);
   }
+});
+
+router.get('/getOutstandingBills', async function(req, res, next){
+  const unpaidBills = await getOutstandingBills();
+  return res.render('bills/outstandingBills', { title: "Outstanding Bills", bills: unpaidBills});
 });
 
 module.exports = router;
