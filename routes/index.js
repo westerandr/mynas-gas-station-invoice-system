@@ -4,7 +4,8 @@ const clientRoutes = require('./client');
 const invoiceRoutes = require('./invoice');
 const vehicleRoutes = require('./vehicle');
 const billRoutes = require('./bill');
-const { Invoice, Client, Bill, Vehicle } = require("../models");
+const customBillRoutes = require('./customBill');
+const { Invoice, Client, Bill, Vehicle, CustomBill } = require("../models");
 
 
 /* GET home page. */
@@ -25,6 +26,7 @@ router.use('/client', clientRoutes);
 router.use('/invoice', invoiceRoutes);
 router.use('/vehicle', vehicleRoutes);
 router.use('/bill', billRoutes);
+router.use('/customBills', customBillRoutes);
 
 
 

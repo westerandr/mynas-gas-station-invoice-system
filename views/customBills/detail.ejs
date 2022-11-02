@@ -1,0 +1,144 @@
+<%- include('../partials/header') %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1><%- title %></h1>
+    </div>
+    <div>
+        <a href="/customBills" class='btn btn-secondary btn-lg'>Back</a>
+    </div>
+</div>
+<section>
+    <p><strong>Date:</strong> <%- dateIssued %></p>
+    <p><strong>Client:</strong> <%- customBill?.Client?.name %></p>
+    
+    <p><strong>Custom Bill #:</strong> <%- customBill.number %></p>
+    <p><strong>Custom Bill Start Date:</strong> <%- customBill.startDate %></p>
+    <p><strong>Custom Bill End Date:</strong> <%- customBill.endDate %></p>
+    
+</section>
+<hr class="my-4">
+<h2 class="mb-3">Approved Vehicles</h2>
+<section>
+    <% if(vehicles.length > 0){ %>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+           
+                <th scope="col">License</th>
+                <th scope="col">Type</th>
+        
+              </tr>
+            </thead>
+            <tbody>
+        <% vehicles.forEach((v) => { %>    
+            <tr>
+           
+                <td><%- v?.license %></td>
+                <td><%- v?.type %></td>
+              
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+    <% }%>
+        
+</section>
+<hr class="my-4">
+<h2 class="mb-3">Invoices</h2>
+<section>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Date (YYYY-MM-DD)</th>
+                <th scope="col">Invoice #</th>
+                <th scope="col">Sale Type</th>
+                <th scope="col">License</th>
+                <th scope="col">Purchase Order</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% invoices.forEach(invoice => {%>
+                    <tr>
+                        <td><%- invoice?.date %></td>
+                        <td><%- invoice?.number %></td>
+                        <td><%- invoice?.saleType %></td>
+                        <td><%- invoice?.license %></td>
+                        <td><%- invoice?.purchaseOrder %></td>
+                        <td><%- invoice?.amount %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+          </table>
+    </table>
+
+</section>
+<% if(billsNotPaid?.length > 0){ %>
+    <hr class="my-4">
+<h2 class="mb-3">Other Unpaid Bills</h2>
+<section>
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">Month</th>
+                <th scope="col">Year</th>
+                <th scope="col">Bill #</th>
+                <th scope="col">Amount</th>
+                <th scope="col"></th>
+
+              </tr>
+            </thead>
+            <tbody>
+                <% billsNotPaid.forEach(bill => {%>
+                    <tr>
+                        <td><%- bill?.month %></td>
+                        <td><%- bill?.year %></td>
+                        <td><%- bill?.number %></td>
+                        <td><%- bill?.amount %></td>
+                        <td><a href="<%- `/customBills/details/${customBill?.id}` %>">View</a></td>
+
+                    </tr>
+                <% }) %>
+            </tbody>
+          </table>
+    </table>
+
+</section>
+<% } %>
+<hr class="my-4">
+<section>
+    <div class="d-flex justify-content-end align-items-center">
+        <%
+            let total = invoices.reduce((sum, invoice) => {
+                return sum + invoice.amount;
+            }, 0)
+        %>
+            <h3>Total: $<%- total.toFixed(2); %></h3>
+            <% if(!customBill?.isPaid){ %>
+                <form method="POST" action="/customBills/pay/<%- customBill?.id %>" class="ms-3">
+                    <input type="submit" value="$ Pay Bill" class="btn btn-success">
+                </form>
+            <% }else{ %>
+                <h3 class="text-success text-uppercase ms-4">Bill Paid</h3>
+            <% } %>
+        
+    </div>
+</section>
+<hr class="my-4">
+<section>
+    <div class="d-flex justify-content-end align-items-center">
+        <form class="ms-2" action="/customBills/export/<%- customBill.id %>" method="POST">
+            <input type="submit" value="Export" class="btn btn-success ms-2"/>
+          </form>
+          <a class="ms-2 btn btn-warning d-inline-block" href="/customBills/edit/<%- customBill?.id %>">Edit</a>
+            <form action="/customBills/delete/<%- customBill.id %>" method="POST">
+                <input type="submit" value="Delete" class="btn btn-danger ms-2"
+                  onclick="return confirm(`Are you sure you want to delete Custom Bill #<%- customBill?.number %> for <%- customBill?.Client?.name %>?`)"
+                />
+              </form>
+        
+    </div>
+</section>
+
+<%- include('../partials/footer') %>
+

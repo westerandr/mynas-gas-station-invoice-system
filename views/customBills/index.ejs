@@ -1,0 +1,132 @@
+<%- include('../partials/header') %>
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1><%- title %></h1>
+        </div>
+        <div class="d-flex flex-row justify-content-around w-25">
+            <div>
+                <a href='/customBills/create' class='btn btn-primary btn-lg'>New</a>
+            </div>
+        </div>
+    </div>
+    <div class="my-3">
+        <form action="/customBills/find" method="POST" class="form d-flex justify-content-end align-items-center">
+            <div class="ms-2 mb-3">
+                <label for="clientId" class="form-label">Client</label>
+                <select name="clientId" id="clientId" class="form-select" required>
+                    <% 
+                        clients.forEach((client) => {
+                            %><option value="<%= client?.id %>"><%= client?.name %></option><%
+                        });
+                    %>
+                </select>
+            </div>
+            <div class="ms-2 mb-3">
+                <label for="startDate" class="form-label">Start Date</label>
+                <input type="date" class="form-control" id="startDate" name="startDate" required>
+            </div>   
+            <div class="ms-2 mb-3">
+                <label for="endDate" class="form-label">End Date</label>
+                <input type="date" class="form-control" id="endDate" name="endDate" required>
+            </div>   
+            <div class="ms-2 mb-3 pt-3">
+                <button type="submit" class="btn btn-info text-light">Search Bill</button>
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col">
+            <section>
+                <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Client</th>
+                        <th scope="col">Bill #</th>
+                        <th scope="col">Start Date</th>
+                        <th scope="col">End Date</th>     
+                        <th scope="col">Paid</th>                    
+
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <% if(customBills.length > 0){ %>
+                                <% customBills.forEach(bill => {%>
+                                    <tr>
+                                        <td><%- bill?.id %></td>
+                                        <td><%- bill?.Client?.name %></td>
+                                        <td><%- bill?.number %></td>
+                                        <td><%- bill?.startDate %></td>
+                                        <td><%- bill?.endDate %></td>
+                                        <td class="<%- bill?.isPaid ? 'text-success' : 'text-warning' %>"><%- bill?.isPaid ? 'YES' : 'NO' %></td>
+
+                                        <td><a href="/customBills/details/<%- bill?.id %>" class="btn btn-secondary">Details</a></td>
+                                    </tr>
+                                <% }) %>
+                            <%}else{%>
+                                <tr>
+                                    <td colspan="6"><p class="text-center py-2 h6">No Bills created yet...</p></td>
+                                </tr>
+                            <% } %>
+
+                    </tbody>
+                    <tfoot>
+                        <% if (pages > 0) { %>
+                            <tr>
+                            <td colspan="7">  
+                                <ul class="pagination text-center">
+                              <% if (current == 1) { %>
+                                  <li class="disabled"><a>First</a></li>
+                              <% } else { %>
+                                  <li><a href="/customBills?page=1&perPage=<%- curPerPage %>">First</a></li>
+                              <% } %>
+                              <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+                              <% if (i !== 1) { %>
+                                  <li class="disabled"><a>...</a></li>
+                              <% } %>
+                              <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+                                  <% if (i == current) { %>
+                                      <li class="active"><a><%= i %></a></li>
+                                  <% } else { %>
+                                      <li><a href="/customBills?page=<%= i %>&perPage=<%- curPerPage %>"><%= i %></a></li>
+                                  <% } %>
+                                  <% if (i == Number(current) + 4 && i < pages) { %>
+                                      <li class="disabled"><a>...</a></li>
+                                  <% } %>
+                              <% } %>
+                              <% if (current == pages) { %>
+                                  <li class="disabled"><a>Last</a></li>
+                              <% } else { %>
+                                  <li><a href="/customBills?page=<%= pages %>&perPage=<%- curPerPage %>">Last</a></li>
+                              <% } %>
+                              <label id="perPageLabel" for="perPage">Items Per Page</label>
+                              <select class="ms-1" id="perPage">
+                                  <option value="10" <%- curPerPage == 10 ? 'selected' : '' %>>10</option>
+                                  <option value="20" <%- curPerPage == 20 ? 'selected' : '' %>>20</option>
+                                  <option value="50" <%- curPerPage == 50 ? 'selected' : '' %>>50</option>
+                                  <option value="100" <%- curPerPage == 100 ? 'selected' : '' %>>100</option>
+                              </select>
+                          </ul>
+                       
+                          </td>
+                            </tr>
+                          <% } %>
+                    </tfoot>
+                  </table>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        const perPage = document.getElementById("perPage");
+        perPage.onchange = () => {
+            const itemsPerPage = perPage.value;
+            if(itemsPerPage == null || itemsPerPage == "") return;
+            window.location.href = "/customBills?page=1&perPage="+itemsPerPage;
+        }
+    </script>
+
+<%- include('../partials/footer') %>

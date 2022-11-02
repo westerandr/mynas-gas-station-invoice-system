@@ -1,0 +1,76 @@
+<%- include('../partials/header') %>
+<% const isEdit = mode == 'edit'; %>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h1><%- title %></h1>
+    </div>
+    <div>
+        <a href='<%- isEdit ? '/customBills/details/'+customBill.id : '/customBills' %>' class='btn btn-secondary btn-lg'>Back</a>
+    </div>
+</div>
+<form 
+    method="POST" 
+    action="<%- isEdit ? '/customBills/update/'+customBill.id : '/customBills' %>"
+    >
+    <% if(!isEdit){  %>
+    <div class="alert alert-warning my-4" role="alert">
+        Please make sure all Invoices are created for Bill first!
+      </div>
+    <% } %>
+    <div class="mb-3">
+      <label for="date" class="form-label">Date of Issue</label>
+      <input type="date" class="form-control" id="date" name="dateIssued" value="<%- isEdit ? customBill?.dateIssued : '' %>" required>
+    </div>
+
+
+    <div class="mb-3">
+        <label for="client" class="form-label">Client</label>
+        <select class="form-select" id="client" name="clientId" required>
+            <%
+            if(!isEdit){
+                %><option selected></option> <%
+            }
+            var options = clients;
+            for ( var i = 0; i < options.length; i++ )
+            {
+                var selected = ( isEdit && customBill?.ClientId == options[i].id ) ? "selected" : "";
+                %><option  value="<%=options[ i ].id %>" <%= selected%>><%=options[i].name %></option><%
+            }
+
+            %>
+
+          </select>
+    </div>
+
+
+    <div class="mb-3">
+        <label for="startDate" class="form-label">Start Date</label>
+        <input type="date" class="form-control" id="startDate" name="startDate" value="<%- isEdit ? customBill?.startDate : '' %>" required>
+    </div>   
+
+    <div class="mb-3">
+        <label for="endDate" class="form-label">End Date</label>
+        <input type="date" class="form-control" id="endDate" name="endDate" value="<%- isEdit ? customBill?.endDate : '' %>" required>
+    </div>   
+
+    <% if(isEdit){  %>
+
+        <div class="mb-3">
+            <% var isChecked = customBill?.isPaid ? "checked" : "" %>
+            <div class="form-check">
+                <label class="form-check-label" for="flexCheckDefault">
+                    Is Paid?
+                  </label>
+                <input class="form-check-input" type="checkbox"  id="isPaid" name="isPaid" <%= isChecked %>>
+               
+            </div>
+
+        </div>
+
+     <% } %>
+    
+
+
+    <button type="submit" class="btn btn-primary"><%- isEdit ? "Update" : "Create" %></button>
+  </form>
+<%- include('../partials/footer') %>

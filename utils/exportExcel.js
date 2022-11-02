@@ -22,7 +22,9 @@ module.exports = {
                 
                 const writeRow = workSheet.getRow(writeIndex);
 
-                writeRow.getCell(1).value = `${bill?.month} ${bill?.year} ACCOUNT`.toUpperCase();
+                if(bill?.month != null && bill?.year != null){
+                    writeRow.getCell(1).value = `${bill?.month} ${bill?.year} ACCOUNT`.toUpperCase();
+                }
                 writeRow.getCell(4).value = `DUE: ${dueMonth} ${dueYear}`.toUpperCase();
 
                 if(writeIndex > 16){
