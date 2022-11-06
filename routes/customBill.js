@@ -283,7 +283,7 @@ router.post("/export/:id", async function (req, res, next) {
     });
 
     let filename =
-      `${customBill?.Client?.name} ${moment(customBill.startDate).format('DD/MM/YYYY')} ${moment(customBill.endDate).format('DD/MM/YYYY')}`.toUpperCase();
+      `${customBill?.Client?.name} ${moment(customBill.startDate).format('DD-MM-YYYY')} ${moment(customBill.endDate).format('DD-MM-YYYY')}`.toUpperCase();
     filename += ".xlsx";
     await exportBill(
       res,
