@@ -95,13 +95,13 @@ router.get("/create", async function (req, res, next) {
   
   router.post("/:id", async function (req, res, next) {
     try {
-        const { date, saleType, license, purchaseOrder, amount, clientId } = req.body;
+        const { date, number, saleType, license, purchaseOrder, amount, clientId } = req.body;
         await Invoice.update( 
-            { date, saleType, license, purchaseOrder, amount, ClientId: clientId  },
+            { date, number, saleType, license, purchaseOrder, amount, ClientId: clientId  },
             { where: { number: req.params.id } }
         );
     
-        res.redirect("/invoice/details/" + req.params.id);
+        res.redirect("/invoice/details/" + number);
     } catch (error) {
       next(error);
     }

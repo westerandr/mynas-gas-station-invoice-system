@@ -20,7 +20,7 @@
         <label for="number" class="form-label">Invoice #</label>
         <% 
             if(isEdit){
-                %><input type="number" class="form-control" id="number" value="<%= invoice?.number %>" readonly><%
+                %><input type="number" class="form-control" id="number" name="number" value="<%= invoice?.number %>" required><%
             }else{
                 %><input type="number" class="form-control" id="number" min="0" name="number"  required><%
             }
