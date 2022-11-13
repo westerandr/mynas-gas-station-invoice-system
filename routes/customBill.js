@@ -87,6 +87,8 @@ router.post("/", async function (req, res, next) {
       ClientId: clientId,
     });
 
+    await customBill.save();
+
     await client.increment("billingCounter", { by: 1 });
 
     res.redirect("/customBill/details/" + customBill.id);
@@ -268,7 +270,7 @@ router.post("/export/:id", async function (req, res, next) {
 
     const invoices = await Invoice.findAll({
       where: {
-        ClientId: customBill?.ClientId,
+        ClientId: customBill?.Client?.id,
         date: {
           [Op.between]: [sd, ed],
         },
@@ -293,7 +295,7 @@ router.post("/export/:id", async function (req, res, next) {
       dateIssued,
       vehicles,
       invoices,
-      billsNotPaid
+      []
     );
   } catch (error) {
     next(error);
