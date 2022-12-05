@@ -91,7 +91,7 @@ router.post("/", async function (req, res, next) {
 
     await client.increment("billingCounter", { by: 1 });
 
-    res.redirect("/customBill/details/" + customBill.id);
+    res.redirect("/customBills/details/" + customBill.id);
   } catch (error) {
     next(error);
   }
@@ -186,6 +186,9 @@ router.get("/details/:id", async function (req, res, next) {
           [Op.between]: [sd, ed],
         },
       },
+      order: [
+        ['date', 'ASC']
+      ]
     });
 
     const amount = invoices.reduce(
