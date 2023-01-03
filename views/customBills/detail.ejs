@@ -80,8 +80,8 @@
         <table class="table table-bordered">
             <thead>
               <tr>
-                <th scope="col">Month</th>
-                <th scope="col">Year</th>
+                <th scope="col">Start Date</th>
+                <th scope="col">End Date</th>
                 <th scope="col">Bill #</th>
                 <th scope="col">Amount</th>
                 <th scope="col"></th>
@@ -91,8 +91,8 @@
             <tbody>
                 <% billsNotPaid.forEach(bill => {%>
                     <tr>
-                        <td><%- bill?.month %></td>
-                        <td><%- bill?.year %></td>
+                        <td><%- bill?.startDate %></td>
+                        <td><%- bill?.endDate %></td>
                         <td><%- bill?.number %></td>
                         <td><%- bill?.amount %></td>
                         <td><a href="<%- `/customBills/details/${customBill?.id}` %>">View</a></td>
